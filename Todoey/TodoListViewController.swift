@@ -11,10 +11,15 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     var itemArray = ["Buy eggs", "Buy Milk", "Buy Oreos"]
+    
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     // MARK: - Add New Item
@@ -29,9 +34,11 @@ class TodoListViewController: UITableViewController {
             
             if text != "" {
                 self.itemArray.append(text)
+                self.defaults.set(self .itemArray, forKey: "TodoListArray")
             } else {
                 text = "Empty Title"
                 self.itemArray.append(text)
+                self.defaults.set(self .itemArray, forKey: "TodoListArray")
             }
             
             self.tableView.reloadData()
